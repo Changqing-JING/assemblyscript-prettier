@@ -50,3 +50,23 @@ test("class decorator", async () => {
 
   expect(formatedCode).toMatchSnapshot();
 });
+
+test("external decorator with ffi.MultiReturn result", async () => {
+  const originCode = `
+
+    declare namespace ffi {
+      class MultiReturn<T> {}
+    }
+
+    @external("env", "multi_return_api")
+    export declare function multi_return_api(): ffi.MultiReturn<[i32, i32]>;
+
+  `;
+
+  const formatedCode = await prettier.format(originCode, {
+    parser: "typescript",
+    plugins: [asPlugin],
+  });
+
+  expect(formatedCode).toMatchSnapshot();
+});
