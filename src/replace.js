@@ -1,21 +1,12 @@
+import { createRequire } from "node:module";
+
 export const magic = "MAGIC_ASSEMBLYSCRIPT_PRETTIER_1996";
 const prefix = "/*" + magic;
 const postfix = magic + "*/";
-
-async function loadAssemblyScriptParser() {
-  try {
-    return await import("../warpo/assemblyscript/build-parser/index-parser.bundle.js");
-  } catch (error) {
-    if (error?.code !== "ERR_MODULE_NOT_FOUND") {
-      throw error;
-    }
-
-    return import("../warpo/assemblyscript/build-parser/index-parser.js");
-  }
-}
+const require = createRequire(import.meta.url);
+const assemblyscript = require("warpo/assemblyscript/build-parser/index-parser.js");
 
 export async function preProcess(code) {
-  const assemblyscript = await loadAssemblyScriptParser();
   const visitDecorators = (node) => {
     let list = [];
     let _visit = (_node) => {

@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "prettier -c .",
     "lint:fix": "prettier -w .",
-    "test": "node --test tests/comment.test.js tests/format.test.js tests/inline.test.js tests/printer-init.test.js",
-    "test:create": "node --test tests/comment.test.js tests/format.test.js tests/inline.test.js tests/printer-init.test.js"
+    "test": "node --test",
+    "test:create": "node --test --test-update-snapshots"
   },
   "author": "congcongcai0907@163.com",
   "license": "MIT",
@@ -35,6 +35,8 @@
   "peerDependencies": {
     "prettier": "^3.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "warpo": "file:../../warpo"
+  },
   "devDependencies": {}
 }

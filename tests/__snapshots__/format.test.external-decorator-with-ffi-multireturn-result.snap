@@ -1,0 +1,7 @@
+declare namespace ffi {
+  class MultiReturn<T> {}
+}
+
+
+@external("env", "multi_return_api")
+export declare function multi_return_api(): ffi.MultiReturn<[i32, i32]>;

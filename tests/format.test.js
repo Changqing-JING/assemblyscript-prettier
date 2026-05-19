@@ -1,7 +1,7 @@
-import assert from "node:assert/strict";
 import { test } from "node:test";
 import * as prettier from "prettier";
 import asPlugin from "../src/plugin.js";
+import { assertSnapshot } from "./snapshot.js";
 
 test("variant decorator", async () => {
   const originCode = `
@@ -15,12 +15,7 @@ test("variant decorator", async () => {
     plugins: [asPlugin],
   });
 
-  assert.equal(
-    formatedCode,
-    `
-@lazy let offset: usize = startOffset;
-`,
-  );
+  assertSnapshot(import.meta.url, "variant decorator", formatedCode);
 });
 
 test("function decorator", async () => {
@@ -37,13 +32,7 @@ test("function decorator", async () => {
     plugins: [asPlugin],
   });
 
-  assert.equal(
-    formatedCode,
-    `
-@global @unsafe
-export function __new(size: usize, id: i32): usize {}
-`,
-  );
+  assertSnapshot(import.meta.url, "function decorator", formatedCode);
 });
 
 test("class decorator", async () => {
@@ -61,13 +50,7 @@ test("class decorator", async () => {
     plugins: [asPlugin],
   });
 
-  assert.equal(
-    formatedCode,
-    `
-@global @unsafe
-export class AA {}
-`,
-  );
+  assertSnapshot(import.meta.url, "class decorator", formatedCode);
 });
 
 test("external decorator with ffi.MultiReturn result", async () => {
@@ -87,15 +70,5 @@ test("external decorator with ffi.MultiReturn result", async () => {
     plugins: [asPlugin],
   });
 
-  assert.equal(
-    formatedCode,
-    `declare namespace ffi {
-  class MultiReturn<T> {}
-}
-
-
-@external("env", "multi_return_api")
-export declare function multi_return_api(): ffi.MultiReturn<[i32, i32]>;
-`,
-  );
+  assertSnapshot(import.meta.url, "external decorator with ffi.MultiReturn result", formatedCode);
 });
