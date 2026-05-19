@@ -1,3 +1,5 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
 import * as prettier from "prettier";
 import asPlugin from "../src/plugin.js";
 
@@ -14,5 +16,11 @@ test("inline variable", async () => {
     plugins: [asPlugin],
   });
 
-  expect(formattedCode).toMatchSnapshot();
+  assert.equal(
+    formattedCode,
+    `
+@inline
+const EXPECT_MAX_INDEX = 2147483647;
+`
+  );
 });

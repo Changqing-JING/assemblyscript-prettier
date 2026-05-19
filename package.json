@@ -7,8 +7,8 @@
   "scripts": {
     "lint": "prettier -c .",
     "lint:fix": "prettier -w .",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:create": "NODE_OPTIONS=--experimental-vm-modules jest --updateSnapshot"
+    "test": "node --test tests/comment.test.js tests/format.test.js tests/inline.test.js tests/printer-init.test.js",
+    "test:create": "node --test tests/comment.test.js tests/format.test.js tests/inline.test.js tests/printer-init.test.js"
   },
   "author": "congcongcai0907@163.com",
   "license": "MIT",
@@ -35,10 +35,6 @@
   "peerDependencies": {
     "prettier": "^3.0.0"
   },
-  "dependencies": {
-    "assemblyscript": "~0.27.0"
-  },
-  "devDependencies": {
-    "jest": "^29.5.0"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 }

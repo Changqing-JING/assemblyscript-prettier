@@ -1,0 +1,3 @@
+[submodule "warpo"]
+	path = warpo
+	url = https://github.com/wasm-ecosystem/warpo.git

@@ -2,34 +2,32 @@ export const magic = "MAGIC_ASSEMBLYSCRIPT_PRETTIER_1996";
 const prefix = "/*" + magic;
 const postfix = magic + "*/";
 
+async function loadAssemblyScriptParser() {
+  try {
+    return await import("../warpo/assemblyscript/build-parser/index-parser.bundle.js");
+  } catch (error) {
+    if (error?.code !== "ERR_MODULE_NOT_FOUND") {
+      throw error;
+    }
+
+    return import("../warpo/assemblyscript/build-parser/index-parser.js");
+  }
+}
+
 export async function preProcess(code) {
-  globalThis.WebAssembly.instantiateStreaming =
-    globalThis.WebAssembly.instantiateStreaming ??
-    (async (source, importObject) => {
-      const response = await Promise.resolve(source);
-      const buffer = await response.arrayBuffer();
-      return WebAssembly.instantiate(buffer, importObject);
-    });
-  const assemblyscript = await import("assemblyscript");
-  const NodeKind = assemblyscript.NodeKind;
+  const assemblyscript = await loadAssemblyScriptParser();
   const visitDecorators = (node) => {
     let list = [];
     let _visit = (_node) => {
-      switch (_node.kind) {
-        case NodeKind.Source: {
-          _node.statements.forEach((statement) => {
-            _visit(statement);
-          });
-          break;
-        }
-        case NodeKind.ClassDeclaration:
-        case NodeKind.InterfaceDeclaration:
-        case NodeKind.NamespaceDeclaration: {
-          _node.members.forEach((statement) => {
-            _visit(statement);
-          });
-          break;
-        }
+      if (Array.isArray(_node?.statements)) {
+        _node.statements.forEach((statement) => {
+          _visit(statement);
+        });
+      }
+      if (Array.isArray(_node?.members)) {
+        _node.members.forEach((statement) => {
+          _visit(statement);
+        });
       }
       if (_node.decorators) {
         list.push(
